@@ -19,7 +19,6 @@
   "homepage": "https://github.com/JetJadeja/hardhat-huff#readme",
   "dependencies": {
     "child-process-async": "^1.0.1",
-    "huffc": "0.0.3",
     "ts-node": "^10.4.0"
   }
 }
