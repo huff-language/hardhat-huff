@@ -47,17 +47,17 @@ export const compile = async (
     // Log the compilation.
     console.log(`Compiling ${pathFromCwd}`);
 
-    console.log(compiler.compile);
-
     // Compile the file.
-    const output = compiler.compile(pathFromSources, {
-      filePath: file,
+    const output = compiler.default({
+      filePath: pathFromCwd,
       generateAbi: true,
     });
 
     // Get the artifact of the compiled file.
     const sourceName = await localPathToSourceName(paths.root, file);
     const artifact = await generateArtifact(sourceName, output);
+
+    console.log(artifact);
 
     // Save the artifact.
     artifacts.saveArtifactAndDebugFile(artifact);

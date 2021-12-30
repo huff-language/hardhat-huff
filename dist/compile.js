@@ -77,9 +77,8 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
                 pathFromSources = path.relative(paths.sources, file);
                 // Log the compilation.
                 console.log("Compiling ".concat(pathFromCwd));
-                console.log(compiler.compile);
-                output = compiler.compile(pathFromSources, {
-                    filePath: file,
+                output = compiler["default"]({
+                    filePath: pathFromCwd,
                     generateAbi: true
                 });
                 return [4 /*yield*/, (0, source_names_1.localPathToSourceName)(paths.root, file)];
@@ -88,6 +87,7 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
                 return [4 /*yield*/, generateArtifact(sourceName, output)];
             case 5:
                 artifact = _a.sent();
+                console.log(artifact);
                 // Save the artifact.
                 artifacts.saveArtifactAndDebugFile(artifact);
                 _a.label = 6;
