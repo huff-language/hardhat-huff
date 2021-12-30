@@ -8,7 +8,7 @@ import {
 
 import path = require("path");
 import fs = require("fs-extra");
-import glob from "glob";
+import glob = require("glob");
 import { exec } from "child-process-async";
 
 /* Define constants */
