@@ -1,8 +1,10 @@
-import compile from 'huffc'
 import { HuffConfig } from './type-extensions'
 import { Artifact, Artifacts, ProjectPathsConfig } from 'hardhat/types'
+import compile from 'huffc'
+
 import path = require('path')
 import fsExtra = require('fs-extra')
+const exec = require('child_process').exec
 
 import {
   DockerBadGatewayError,
@@ -21,6 +23,14 @@ const HUFF_DOCKER_REPOSITORY = 'jetjadeja/huffc'
 const LAST_VERSION_USED_FILENAME = 'last-huff-version-used.txt'
 const DOCKER_IMAGES_LAST_UPDATE_CHECK_FILE = 'docker-updates.json'
 const CHECK_UPDATES_INTERVAL = 3600000
+
+exec('npm install huffc', (error, stdout, stderr) => {
+  console.log('stdout: ' + stdout)
+  console.log('stderr: ' + stderr)
+  if (error !== null) {
+    console.log('exec error: ' + error)
+  }
+}).stderr.pipe(process.stderr)
 
 /**
  * Compile the project's source code.

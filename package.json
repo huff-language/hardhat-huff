@@ -43,7 +43,9 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-docker": "^2.0.2",
-    "huffc": "0.0.1"
+    "child-process": "^1.0.2",
+    "huffc": "^0.0.1",
+    "npm": "^8.3.0"
   },
   "bugs": {
     "url": "https://github.com/nomiclabs/hardhat-ts-plugin-boilerplate/issues"
