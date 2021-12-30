@@ -1,21 +1,14 @@
 {
   "name": "hardhat-huff",
-  "version": "0.0.1",
-  "description": "Huff support for Hardhat",
+  "description": "This is a sample Hardhat plugin written in TypeScript. Creating a Hardhat plugin can be as easy as extracting a part of your config into a different file and publishing it to npm.",
+  "version": "1.0.0",
+  "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nomiclabs/hardhat-ts-plugin-boilerplate.git"
+    "url": "git+https://github.com/JetJadeja/hardhat-huff.git"
   },
-  "author": "Nomic Labs LLC",
-  "license": "MIT",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
-  "keywords": [
-    "ethereum",
-    "smart-contracts",
-    "hardhat",
-    "hardhat-plugin"
-  ],
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "lint:fix": "prettier --write 'src/**/*.{js,ts}' 'test/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json",
     "lint": "tslint --config tslint.json --project tsconfig.json",
