@@ -26,6 +26,9 @@ export const compile = async (
   paths: ProjectPathsConfig,
   artifacts: Artifacts
 ) => {
+  // Get the Huff compiler.
+  console.log("Pulling Huff version...");
+
   // Pull the specified huffc version is specified.
   await pullNewVersion(config.version, paths);
 
@@ -43,6 +46,8 @@ export const compile = async (
 
     // Log the compilation.
     console.log(`Compiling ${pathFromCwd}`);
+
+    console.log(compiler.compile);
 
     // Compile the file.
     const output = compiler.compile(pathFromSources, {

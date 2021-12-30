@@ -56,9 +56,11 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
     var compiler, files, _i, files_1, file, pathFromCwd, pathFromSources, output, sourceName, artifact;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: 
-            // Pull the specified huffc version is specified.
-            return [4 /*yield*/, pullNewVersion(config.version, paths)];
+            case 0:
+                // Get the Huff compiler.
+                console.log("Pulling Huff version...");
+                // Pull the specified huffc version is specified.
+                return [4 /*yield*/, pullNewVersion(config.version, paths)];
             case 1:
                 // Pull the specified huffc version is specified.
                 _a.sent();
@@ -75,6 +77,7 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
                 pathFromSources = path.relative(paths.sources, file);
                 // Log the compilation.
                 console.log("Compiling ".concat(pathFromCwd));
+                console.log(compiler.compile);
                 output = compiler.compile(pathFromSources, {
                     filePath: file,
                     generateAbi: true
