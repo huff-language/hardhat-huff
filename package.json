@@ -2,7 +2,7 @@
   "name": "hardhat-huff",
   "description": "This is a sample Hardhat plugin written in TypeScript. Creating a Hardhat plugin can be as easy as extracting a part of your config into a different file and publishing it to npm.",
   "version": "1.0.1",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JetJadeja/hardhat-huff.git"
