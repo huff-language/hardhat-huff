@@ -7,7 +7,7 @@ import {
 } from "hardhat/plugins";
 
 import path = require("path");
-import fsExtra from "fs-extra";
+import fs = require("fs-extra");
 import glob from "glob";
 import { exec } from "child-process-async";
 
@@ -114,12 +114,12 @@ const getLastUsedVersion = async (
   const filePath = path.join(paths.cache, USED_VERSION_FILE);
 
   // If the file doesn't exist, return "undefined".
-  if (!(await fsExtra.pathExists(filePath))) {
+  if (!(await fs.pathExists(filePath))) {
     return undefined;
   }
 
   // Read and return the filedata.
-  return fsExtra.readFile(filePath, "utf8");
+  return fs.readFile(filePath, "utf8");
 };
 
 /** Save the last Huff version used */
@@ -131,8 +131,8 @@ const saveLastUsedVersion = async (
   const filePath = path.join(paths.cache, USED_VERSION_FILE);
 
   // Write the version to the file.
-  await fsExtra.ensureDir(path.dirname(filePath));
-  return fsExtra.writeFile(filePath, version, "utf8");
+  await fs.ensureDir(path.dirname(filePath));
+  return fs.writeFile(filePath, version, "utf8");
 };
 
 /** Get an array of all files */
