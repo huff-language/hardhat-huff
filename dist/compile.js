@@ -40,7 +40,7 @@ exports.compile = void 0;
 var source_names_1 = require("hardhat/utils/source-names");
 var plugins_1 = require("hardhat/plugins");
 var path = require("path");
-var fs_extra_1 = require("fs-extra");
+var fs = require("fs-extra");
 var glob_1 = require("glob");
 var child_process_async_1 = require("child-process-async");
 /* Define constants */
@@ -145,14 +145,14 @@ var getLastUsedVersion = function (paths) { return __awaiter(void 0, void 0, voi
         switch (_a.label) {
             case 0:
                 filePath = path.join(paths.cache, USED_VERSION_FILE);
-                return [4 /*yield*/, fs_extra_1["default"].pathExists(filePath)];
+                return [4 /*yield*/, fs.pathExists(filePath)];
             case 1:
                 // If the file doesn't exist, return "undefined".
                 if (!(_a.sent())) {
                     return [2 /*return*/, undefined];
                 }
                 // Read and return the filedata.
-                return [2 /*return*/, fs_extra_1["default"].readFile(filePath, "utf8")];
+                return [2 /*return*/, fs.readFile(filePath, "utf8")];
         }
     });
 }); };
@@ -164,11 +164,11 @@ var saveLastUsedVersion = function (version, paths) { return __awaiter(void 0, v
             case 0:
                 filePath = path.join(paths.cache, USED_VERSION_FILE);
                 // Write the version to the file.
-                return [4 /*yield*/, fs_extra_1["default"].ensureDir(path.dirname(filePath))];
+                return [4 /*yield*/, fs.ensureDir(path.dirname(filePath))];
             case 1:
                 // Write the version to the file.
                 _a.sent();
-                return [2 /*return*/, fs_extra_1["default"].writeFile(filePath, version, "utf8")];
+                return [2 /*return*/, fs.writeFile(filePath, version, "utf8")];
         }
     });
 }); };
