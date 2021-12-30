@@ -41,7 +41,7 @@ var source_names_1 = require("hardhat/utils/source-names");
 var plugins_1 = require("hardhat/plugins");
 var path = require("path");
 var fs = require("fs-extra");
-var glob_1 = require("glob");
+var glob = require("glob");
 var child_process_async_1 = require("child-process-async");
 /* Define constants */
 var USED_VERSION_FILE = "last-used-version.txt";
@@ -176,7 +176,7 @@ var saveLastUsedVersion = function (version, paths) { return __awaiter(void 0, v
 var getFiles = function (paths) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         // Return an array of all Huff files.
-        return [2 /*return*/, glob_1["default"].sync(path.join(paths.sources, "**", "*.huff"))];
+        return [2 /*return*/, glob.sync(path.join(paths.sources, "**", "*.huff"))];
     });
 }); };
 /** Get the name of a contract given the filename */
