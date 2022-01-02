@@ -71,7 +71,7 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
                 _i = 0, files_1 = files;
                 _a.label = 3;
             case 3:
-                if (!(_i < files_1.length)) return [3 /*break*/, 7];
+                if (!(_i < files_1.length)) return [3 /*break*/, 8];
                 file = files_1[_i];
                 pathFromCwd = path.relative(process.cwd(), file);
                 pathFromSources = path.relative(paths.sources, file);
@@ -87,14 +87,16 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
                 return [4 /*yield*/, generateArtifact(sourceName, output)];
             case 5:
                 artifact = _a.sent();
-                console.log(artifact);
                 // Save the artifact.
-                artifacts.saveArtifactAndDebugFile(artifact);
-                _a.label = 6;
+                return [4 /*yield*/, artifacts.saveArtifactAndDebugFile(artifact)];
             case 6:
+                // Save the artifact.
+                _a.sent();
+                _a.label = 7;
+            case 7:
                 _i++;
                 return [3 /*break*/, 3];
-            case 7:
+            case 8:
                 // Update the last version used.
                 saveLastUsedVersion(config.version, paths);
                 return [2 /*return*/];
