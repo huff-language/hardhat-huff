@@ -57,10 +57,8 @@ export const compile = async (
     const sourceName = await localPathToSourceName(paths.root, file);
     const artifact = await generateArtifact(sourceName, output);
 
-    console.log(artifact);
-
     // Save the artifact.
-    artifacts.saveArtifactAndDebugFile(artifact);
+    await artifacts.saveArtifactAndDebugFile(artifact);
   }
 
   // Update the last version used.
