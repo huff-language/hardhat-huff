@@ -32,6 +32,9 @@ export const compile = async (
   // Pull the specified huffc version is specified.
   await pullNewVersion(config.version, paths);
 
+  // Update the last version used.
+  saveLastUsedVersion(config.version, paths);
+
   // Import the huff compiler.
   const compiler = require("huffc");
 
@@ -60,9 +63,6 @@ export const compile = async (
     // Save the artifact.
     await artifacts.saveArtifactAndDebugFile(artifact);
   }
-
-  // Update the last version used.
-  saveLastUsedVersion(config.version, paths);
 };
 
 /** Generate a file artifact */
@@ -93,10 +93,13 @@ const generateArtifact = async (
 /** Pull a new version if needed */
 const pullNewVersion = async (version: string, paths: ProjectPathsConfig) => {
   // Get the last version used.
-  const lastVersion = await getLastUsedVersion(paths);
+  const lastVersion = await getLastUsedVersion(
+    paths,
+    version === "latest" ? true : false
+  );
 
   // If the last version used is the same as the current version, return.
-  if (lastVersion == version) return;
+  if (lastVersion === version) return;
 
   // Pull the new version.
   const { _, installErr } = await exec(`npm i huffc@${version}`);
@@ -111,7 +114,8 @@ const pullNewVersion = async (version: string, paths: ProjectPathsConfig) => {
 
 /** Get the last Huff verion used */
 const getLastUsedVersion = async (
-  paths: ProjectPathsConfig
+  paths: ProjectPathsConfig,
+  latest: boolean
 ): Promise<string> => {
   // Get the path of the file that stores the last used version.
   const filePath = path.join(paths.cache, USED_VERSION_FILE);
@@ -121,8 +125,25 @@ const getLastUsedVersion = async (
     return undefined;
   }
 
-  // Read and return the filedata.
-  return fs.readFile(filePath, "utf8");
+  // Read the version number.
+  const version = fs.readFile(filePath, "utf8");
+
+  // If the version is "latest," return the latest version.
+  if (latest) {
+    // Pull the most recent Huff version
+    const { stdout } = await exec("npm show huffc version");
+
+    // If the versions are different, return the latest version.
+    if (version !== stdout) {
+      return stdout;
+    }
+
+    // Return latest, so that the package isn't reinstalled.
+    return "latest";
+  }
+
+  // Return the filedata.
+  return version;
 };
 
 /** Save the last Huff version used */
@@ -132,6 +153,15 @@ const saveLastUsedVersion = async (
 ) => {
   // Get the path of the file that stores the last used version.
   const filePath = path.join(paths.cache, USED_VERSION_FILE);
+
+  // If the version === "latest," get the latest version on npm and write to that.
+  if (version === "latest") {
+    // Pull the most recent Huff version
+    const { stdout } = await exec("npm show huffc version");
+
+    // If the versions are different, return the latest version.
+    return fs.writeFile(filePath, stdout, "utf8");
+  }
 
   // Write the version to the file.
   await fs.ensureDir(path.dirname(filePath));
