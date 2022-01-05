@@ -64,6 +64,8 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
             case 1:
                 // Pull the specified huffc version is specified.
                 _a.sent();
+                // Update the last version used.
+                saveLastUsedVersion(config.version, paths);
                 compiler = require("huffc");
                 return [4 /*yield*/, getFiles(paths)];
             case 2:
@@ -96,10 +98,7 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
             case 7:
                 _i++;
                 return [3 /*break*/, 3];
-            case 8:
-                // Update the last version used.
-                saveLastUsedVersion(config.version, paths);
-                return [2 /*return*/];
+            case 8: return [2 /*return*/];
         }
     });
 }); };
@@ -127,11 +126,11 @@ var pullNewVersion = function (version, paths) { return __awaiter(void 0, void 0
     var lastVersion, _a, _, installErr;
     return __generator(this, function (_b) {
         switch (_b.label) {
-            case 0: return [4 /*yield*/, getLastUsedVersion(paths)];
+            case 0: return [4 /*yield*/, getLastUsedVersion(paths, version === "latest" ? true : false)];
             case 1:
                 lastVersion = _b.sent();
                 // If the last version used is the same as the current version, return.
-                if (lastVersion == version)
+                if (lastVersion === version)
                     return [2 /*return*/];
                 return [4 /*yield*/, (0, child_process_async_1.exec)("npm i huffc@".concat(version))];
             case 2:
@@ -144,8 +143,8 @@ var pullNewVersion = function (version, paths) { return __awaiter(void 0, void 0
     });
 }); };
 /** Get the last Huff verion used */
-var getLastUsedVersion = function (paths) { return __awaiter(void 0, void 0, void 0, function () {
-    var filePath;
+var getLastUsedVersion = function (paths, latest) { return __awaiter(void 0, void 0, void 0, function () {
+    var filePath, version, stdout;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -156,21 +155,40 @@ var getLastUsedVersion = function (paths) { return __awaiter(void 0, void 0, voi
                 if (!(_a.sent())) {
                     return [2 /*return*/, undefined];
                 }
-                // Read and return the filedata.
-                return [2 /*return*/, fs.readFile(filePath, "utf8")];
+                version = fs.readFile(filePath, "utf8");
+                if (!latest) return [3 /*break*/, 3];
+                return [4 /*yield*/, (0, child_process_async_1.exec)("npm show huffc version")];
+            case 2:
+                stdout = (_a.sent()).stdout;
+                // If the versions are different, return the latest version.
+                if (version !== stdout) {
+                    return [2 /*return*/, stdout];
+                }
+                // Return latest, so that the package isn't reinstalled.
+                return [2 /*return*/, "latest"];
+            case 3: 
+            // Return the filedata.
+            return [2 /*return*/, version];
         }
     });
 }); };
 /** Save the last Huff version used */
 var saveLastUsedVersion = function (version, paths) { return __awaiter(void 0, void 0, void 0, function () {
-    var filePath;
+    var filePath, stdout;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 filePath = path.join(paths.cache, USED_VERSION_FILE);
-                // Write the version to the file.
-                return [4 /*yield*/, fs.ensureDir(path.dirname(filePath))];
+                if (!(version === "latest")) return [3 /*break*/, 2];
+                return [4 /*yield*/, (0, child_process_async_1.exec)("npm show huffc version")];
             case 1:
+                stdout = (_a.sent()).stdout;
+                // If the versions are different, return the latest version.
+                return [2 /*return*/, fs.writeFile(filePath, stdout, "utf8")];
+            case 2: 
+            // Write the version to the file.
+            return [4 /*yield*/, fs.ensureDir(path.dirname(filePath))];
+            case 3:
                 // Write the version to the file.
                 _a.sent();
                 return [2 /*return*/, fs.writeFile(filePath, version, "utf8")];
