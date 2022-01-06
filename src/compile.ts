@@ -26,9 +26,6 @@ export const compile = async (
   paths: ProjectPathsConfig,
   artifacts: Artifacts
 ) => {
-  // Get the Huff compiler.
-  console.log("Pulling Huff version...");
-
   // Pull the specified huffc version is specified.
   await pullNewVersion(config.version, paths);
 
@@ -100,6 +97,13 @@ const pullNewVersion = async (version: string, paths: ProjectPathsConfig) => {
 
   // If the last version used is the same as the current version, return.
   if (lastVersion === version) return;
+
+  // Tell the user that we are pulling a new Huff version.
+  console.log(
+    version === "latest"
+      ? "Pulling latest version of Huff"
+      : `Pulling Huff version ${version}`
+  );
 
   // Pull the new version.
   const { _, installErr } = await exec(`npm i huffc@${version}`);
