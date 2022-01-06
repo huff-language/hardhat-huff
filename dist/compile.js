@@ -56,11 +56,9 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
     var compiler, files, _i, files_1, file, pathFromCwd, pathFromSources, output, sourceName, artifact;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                // Get the Huff compiler.
-                console.log("Pulling Huff version...");
-                // Pull the specified huffc version is specified.
-                return [4 /*yield*/, pullNewVersion(config.version, paths)];
+            case 0: 
+            // Pull the specified huffc version is specified.
+            return [4 /*yield*/, pullNewVersion(config.version, paths)];
             case 1:
                 // Pull the specified huffc version is specified.
                 _a.sent();
@@ -132,6 +130,10 @@ var pullNewVersion = function (version, paths) { return __awaiter(void 0, void 0
                 // If the last version used is the same as the current version, return.
                 if (lastVersion === version)
                     return [2 /*return*/];
+                // Tell the user that we are pulling a new Huff version.
+                console.log(version === "latest"
+                    ? "Pulling latest version of Huff"
+                    : "Pulling Huff version ".concat(version));
                 return [4 /*yield*/, (0, child_process_async_1.exec)("npm i huffc@".concat(version))];
             case 2:
                 _a = _b.sent(), _ = _a._, installErr = _a.installErr;
