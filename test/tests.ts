@@ -3,14 +3,18 @@ import { assert } from "chai";
 import * as path from "path";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
 
-import { useEnvironment } from "./helpers";
+import { useFixtureProject, useEnvironment, assertFileExists } from "./helpers";
 
 describe("Integration tests examples", function () {
   describe("Hardhat Runtime Environment extension", function () {
-    useEnvironment("hardhat-huff");
+    useFixtureProject("hardhat-project");
+    useEnvironment();
 
     it("Compile Huff Contract and Generate Artifact", async function () {
       await this.env.run(TASK_COMPILE);
+      assertFileExists(
+        path.join("artifacts", "contracts", "Test.huff", ".json")
+      );
     });
   });
 

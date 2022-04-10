@@ -1,21 +1,62 @@
+import { assert, AssertionError } from "chai";
+import * as fsExtra from "fs-extra";
+import * as path from "path";
+
 import { resetHardhatContext } from "hardhat/plugins-testing";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import * as path from "path";
 
 declare module "mocha" {
   interface Context {
-    hre: HardhatRuntimeEnvironment;
+    env: HardhatRuntimeEnvironment;
   }
 }
 
-export function useEnvironment(fixtureProjectName: string) {
-  beforeEach("Loading hardhat environment", function () {
-    process.chdir(path.join(__dirname, "fixture-projects", fixtureProjectName));
+export function assertFileExists(pathToFile: string) {
+  assert.isTrue(
+    fsExtra.existsSync(pathToFile),
+    `Expected ${pathToFile} to exist`
+  );
+}
 
-    this.hre = require("hardhat");
+export function useFixtureProject(projectName: string) {
+  let projectPath: string;
+  let prevWorkingDir: string;
+
+  before(() => {
+    projectPath = getFixtureProjectPath(projectName);
   });
 
-  afterEach("Resetting hardhat", function () {
+  before(() => {
+    prevWorkingDir = process.cwd();
+    process.chdir(projectPath);
+  });
+
+  after(() => {
+    process.chdir(prevWorkingDir);
+  });
+}
+
+function getFixtureProjectPath(projectName: string): string {
+  const projectPath = path.join(__dirname, "fixture-projects", projectName);
+
+  if (!fsExtra.pathExistsSync(projectPath)) {
+    throw new Error(`Fixture project ${projectName} doesn't exist`);
+  }
+
+  return fsExtra.realpathSync(projectPath);
+}
+
+export function useEnvironment(configPath?: string) {
+  beforeEach("Loading hardhat environment", function () {
+    if (configPath !== undefined) {
+      process.env.HARDHAT_CONFIG = configPath;
+    }
+
+    this.env = require("hardhat");
+  });
+
+  afterEach("Resetting hardhat context", function () {
+    delete process.env.HARDHAT_CONFIG;
     resetHardhatContext();
   });
 }
