@@ -75,8 +75,6 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
                 file = files_1[_i];
                 pathFromCwd = path.relative(process.cwd(), file);
                 pathFromSources = path.relative(paths.sources, file);
-                // Log the compilation.
-                console.log("Compiling ".concat(pathFromCwd));
                 output = compiler["default"]({
                     filePath: pathFromCwd,
                     generateAbi: true
@@ -92,6 +90,8 @@ var compile = function (config, paths, artifacts) { return __awaiter(void 0, voi
             case 6:
                 // Save the artifact.
                 _a.sent();
+                // Log the compilation.
+                console.log("Compiled ".concat(pathFromCwd));
                 _a.label = 7;
             case 7:
                 _i++;
@@ -133,7 +133,7 @@ var pullNewVersion = function (version, paths) { return __awaiter(void 0, void 0
                 // Tell the user that we are pulling a new Huff version.
                 console.log(version === "latest"
                     ? "Pulling latest version of Huff"
-                    : "Pulling Huff version ".concat(version));
+                    : "Pulling Huff @ ".concat(version));
                 return [4 /*yield*/, (0, child_process_async_1.exec)("npm i huffc@".concat(version))];
             case 2:
                 _a = _b.sent(), _ = _a._, installErr = _a.installErr;

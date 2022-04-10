@@ -44,9 +44,6 @@ export const compile = async (
     const pathFromCwd = path.relative(process.cwd(), file);
     const pathFromSources = path.relative(paths.sources, file);
 
-    // Log the compilation.
-    console.log(`Compiling ${pathFromCwd}`);
-
     // Compile the file.
     const output = compiler.default({
       filePath: pathFromCwd,
@@ -59,6 +56,9 @@ export const compile = async (
 
     // Save the artifact.
     await artifacts.saveArtifactAndDebugFile(artifact);
+
+    // Log the compilation.
+    console.log(`Compiled ${pathFromCwd}`);
   }
 };
 
@@ -102,7 +102,7 @@ const pullNewVersion = async (version: string, paths: ProjectPathsConfig) => {
   console.log(
     version === "latest"
       ? "Pulling latest version of Huff"
-      : `Pulling Huff version ${version}`
+      : `Pulling Huff @ ${version}`
   );
 
   // Pull the new version.
