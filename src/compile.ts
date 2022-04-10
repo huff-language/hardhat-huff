@@ -15,6 +15,8 @@ import { exec } from "child-process-async";
 const USED_VERSION_FILE = "last-used-version.txt";
 const ARTIFACT_FORMAT_VERSION = "hh-huff-artifact-1";
 
+import * as fsExtra from "fs-extra";
+
 /**
  * Compile the project using Huff.
  * @param config The Huff configuration object.
