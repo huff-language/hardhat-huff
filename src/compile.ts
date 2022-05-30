@@ -108,7 +108,7 @@ const pullNewVersion = async (version: string, paths: ProjectPathsConfig) => {
   );
 
   // Pull the new version.
-  const { _, installErr } = await exec(`npm i huffc@${version}`);
+  const { _, installErr } = await exec(`yarn add huffc@${version}`);
 
   // Raise an error if the installation failed.
   if (installErr)
